@@ -1,0 +1,9 @@
+@extends('layouts.main')
+@section('title', 'Edit Nilai')
+@section('content')
+<div class="card shadow"><div class="card-header">Edit Nilai Siswa</div><div class="card-body"><form method="POST" action="{{ route('nilai.update', $nilai) }}">@csrf @method('PUT')
+<div class="form-group"><label for="siswa_id">Siswa</label><select class="form-control @error('siswa_id') is-invalid @enderror" id="siswa_id" name="siswa_id" required><option value="">Pilih siswa</option>@foreach ($siswas as $item)<option value="{{ $item->id }}" @selected(old('siswa_id', $nilai->siswa_id) == $item->id)>{{ $item->nis }} - {{ $item->nama }}</option>@endforeach</select>@error('siswa_id')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
+<div class="form-group"><label for="mapel_id">Mata Pelajaran</label><select class="form-control @error('mapel_id') is-invalid @enderror" id="mapel_id" name="mapel_id" required><option value="">Pilih mata pelajaran</option>@foreach ($mapels as $item)<option value="{{ $item->id }}" @selected(old('mapel_id', $nilai->mapel_id) == $item->id)>{{ $item->kode_mapel }} - {{ $item->nama_mapel }} (KKM {{ $item->kkm }})</option>@endforeach</select>@error('mapel_id')<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
+@foreach (['nilai_tugas' => 'Nilai Tugas', 'nilai_uts' => 'Nilai UTS', 'nilai_uas' => 'Nilai UAS'] as $field => $label)<div class="form-group"><label for="{{ $field }}">{{ $label }}</label><input class="form-control @error($field) is-invalid @enderror" type="number" step="0.01" min="0" max="100" id="{{ $field }}" name="{{ $field }}" value="{{ old($field, $nilai->$field) }}" required>@error($field)<div class="invalid-feedback">{{ $message }}</div>@enderror</div>@endforeach
+<button class="btn btn-primary">Simpan Perubahan</button> <a class="btn btn-secondary" href="{{ route('nilai.index') }}">Batal</a></form></div></div>
+@endsection
